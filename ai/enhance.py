@@ -40,6 +40,8 @@ def process_single_item(chain, item: Dict, language: str) -> Dict:
         调用 spam.dw-dengwei.workers.dev 接口检测内容是否包含敏感词。
         返回 True 表示触发敏感词，False 表示未触发。
         """
+        if os.environ.get("ENABLE_SENSITIVE_CHECK", "false").lower() not in {"1", "true", "yes"}:
+            return False
         try:
             resp = requests.post(
                 "https://spam.dw-dengwei.workers.dev",
@@ -167,7 +169,11 @@ def process_single_item(chain, item: Dict, language: str) -> Dict:
 
 def process_all_items(data: List[Dict], model_name: str, language: str, max_workers: int) -> List[Dict]:
     """并行处理所有数据项"""
-    llm = ChatOpenAI(model=model_name).with_structured_output(Structure, method="function_calling")
+    llm = ChatOpenAI(
+        model=model_name,
+        api_key=os.environ.get("OPENAI_API_KEY"),
+        base_url=os.environ.get("OPENAI_BASE_URL"),
+    ).with_structured_output(Structure, method="function_calling")
     print('Connect to:', model_name, file=sys.stderr)
     
     prompt_template = ChatPromptTemplate.from_messages([

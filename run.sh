@@ -21,10 +21,10 @@ if [ -z "$OPENAI_API_KEY" ]; then
     echo "   export OPENAI_API_KEY=\"your-api-key-here\""
     echo ""
     echo "🔧 可选变量 / Optional variables:"
-    echo "   export OPENAI_BASE_URL=\"https://api.openai.com/v1\"  # API基础URL / API base URL"
+    echo "   export OPENAI_BASE_URL=\"https://open.bigmodel.cn/api/coding/paas/v4\"  # GLM Coding Plan API base URL"
     echo "   export LANGUAGE=\"Chinese\"                           # 语言设置 / Language setting"
     echo "   export CATEGORIES=\"cs.CV, cs.CL\"                    # 关注分类 / Categories of interest"
-    echo "   export MODEL_NAME=\"gpt-4o-mini\"                     # 模型名称 / Model name"
+    echo "   export MODEL_NAME=\"GLM-4.7\"                          # 模型名称 / Model name"
     echo ""
     echo "💡 设置后重新运行此脚本即可进行完整测试 / After setting, rerun this script for complete testing"
     echo "🚀 或者继续运行部分流程（爬取+去重检查）/ Or continue with partial workflow (crawl + dedup check)"
@@ -42,8 +42,8 @@ else
     # 设置默认值 / Set default values
     export LANGUAGE="${LANGUAGE:-Chinese}"
     export CATEGORIES="${CATEGORIES:-cs.CV, cs.CL}"
-    export MODEL_NAME="${MODEL_NAME:-gpt-4o-mini}"
-    export OPENAI_BASE_URL="${OPENAI_BASE_URL:-https://api.openai.com/v1}"
+    export MODEL_NAME="${MODEL_NAME:-GLM-4.7}"
+    export OPENAI_BASE_URL="${OPENAI_BASE_URL:-https://open.bigmodel.cn/api/coding/paas/v4}"
     
     echo "🔧 当前配置 / Current configuration:"
     echo "   LANGUAGE: $LANGUAGE"
@@ -57,11 +57,13 @@ echo "=== 开始本地调试流程 / Starting Local Debug Workflow ==="
 
 # 获取当前日期 / Get current date
 today=`date -u "+%Y-%m-%d"`
+export PAPER_DATE="${today}"
+mkdir -p data assets
 
-echo "本地测试：爬取 $today 的arXiv论文... / Local test: Crawling $today arXiv papers..."
+echo "本地测试：采集 $today 的多来源论文... / Local test: Collecting $today multi-source papers..."
 
-# 第一步：爬取数据 / Step 1: Crawl data
-echo "步骤1：开始爬取... / Step 1: Starting crawl..."
+# 第一步：采集数据 / Step 1: Collect data
+echo "步骤1：开始多来源采集... / Step 1: Starting multi-source collection..."
 
 # 检查今日文件是否已存在，如存在则删除 / Check if today's file exists, delete if found
 if [ -f "data/${today}.jsonl" ]; then
@@ -72,16 +74,16 @@ else
     echo "📝 今日文件不存在，准备新建... / Today's file doesn't exist, ready to create new one..."
 fi
 
-cd daily_arxiv
-scrapy crawl arxiv -o ../data/${today}.jsonl
+python daily_arxiv/collect_papers.py --config daily_arxiv/config.yaml --output data/${today}.jsonl
 
-if [ ! -f "../data/${today}.jsonl" ]; then
+if [ ! -f "data/${today}.jsonl" ]; then
     echo "爬取失败，未生成数据文件 / Crawling failed, no data file generated"
     exit 1
 fi
 
 # 第二步：检查去重 / Step 2: Check duplicates  
 echo "步骤2：执行去重检查... / Step 2: Performing intelligent deduplication check..."
+cd daily_arxiv
 python daily_arxiv/check_stats.py
 dedup_exit_code=$?
 

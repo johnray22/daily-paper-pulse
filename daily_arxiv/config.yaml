@@ -1,7 +1,90 @@
-arxiv:
-  categories:  # 文章类型
-    - cs.CV
-    - cs.CL
+sources:
+  arxiv:
+    enabled: true
+    max_results_per_category: 80
+    recent_days: 3
+    categories:
+      - cs.RO
+      - cs.AI
+      - cs.CV
+      - cs.LG
+      - cs.CL
+      - eess.SP
+      - q-bio.NC
+
+  semantic_scholar:
+    enabled: true
+    max_results_per_query: 20
+    recent_years:
+      - 2026
+      - 2025
+    queries:
+      - vision language action robot manipulation
+      - robot foundation model embodied AI manipulation
+      - robot learning dexterous manipulation grasping
+      - diffusion policy robotic manipulation
+      - EEG BCI robotic arm control
+      - brain computer interface prosthetic hand shared control
+
+  crossref:
+    enabled: true
+    max_results_per_query: 10
+    recent_years:
+      - 2026
+      - 2025
+    queries:
+      - EEG BCI robotic arm control
+      - brain computer interface prosthetic hand
+      - robot learning manipulation foundation model
+
+  google_scholar:
+    enabled: true
+    fallback_only: true
+    queries:
+      - '"EEG" "robotic arm" "BCI"'
+      - '"prosthetic hand" "brain-computer interface"'
+      - '"vision-language-action" robot'
+
+keywords:
+  high_priority:
+    - vision-language-action
+    - VLA
+    - robot foundation model
+    - robot learning
+    - robotic manipulation
+    - dexterous manipulation
+    - grasping
+    - bimanual manipulation
+    - sim-to-real
+    - world model
+    - diffusion policy
+    - EEG
+    - BCI
+    - brain-computer interface
+    - robotic arm
+    - robotic hand
+    - prosthetic hand
+    - shared control
+  include:
+    - robotics
+    - robot
+    - embodied AI
+    - embodied agent
+    - physical AI
+    - manipulation
+    - grasp
+    - planning
+    - perception
+    - imitation learning
+    - reinforcement learning
+    - motor imagery
+    - SSVEP
+    - cVEP
+    - P300
+    - intent recognition
+    - neural decoding
+    - neuroprosthetics
+    - assistive robotics
 
 llm:
-  model_name: 'deepseek-chat'  # 使用的LLM模型
+  model_name: GLM-4.7

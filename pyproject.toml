@@ -1,7 +1,7 @@
 [project]
-name = "daily-arxiv"
+name = "paperpulse"
 version = "0.1.0"
-description = "Daily crawl arXiv papers and use LLMs to summarize them"
+description = "Multi-source daily paper monitor with AI summaries"
 authors = [
     {name = "Wei Deng", email = "dw-dengwei@outlook.com"},
     {name = "Jian Guan", email = "jianguanthu@gmail.com"},
@@ -13,6 +13,8 @@ dependencies = [
     "dotenv>=0.9.9",
     "langchain>=0.3.20",
     "langchain-openai>=0.3.9",
+    "pyyaml>=6.0.2",
+    "requests>=2.32.3",
     "scrapy>=2.12.0",
     "tqdm>=4.67.1",
 ]

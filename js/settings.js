@@ -483,7 +483,13 @@ function showNotification(message, type = 'success') {
 // 获取GitHub统计数据
 async function fetchGitHubStats() {
   try {
-    const response = await fetch('https://api.github.com/repos/dw-dengwei/daily-arXiv-ai-enhanced');
+    const repoUrl = `https://github.com/${DATA_CONFIG.repoOwner}/${DATA_CONFIG.repoName}`;
+    const repoLink = document.getElementById('repoLink');
+    const footerRepoLink = document.getElementById('footerRepoLink');
+    if (repoLink) repoLink.href = repoUrl;
+    if (footerRepoLink) footerRepoLink.href = repoUrl;
+
+    const response = await fetch(`https://api.github.com/repos/${DATA_CONFIG.repoOwner}/${DATA_CONFIG.repoName}`);
     const data = await response.json();
     const starCount = data.stargazers_count;
     const forkCount = data.forks_count;

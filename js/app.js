@@ -393,7 +393,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function fetchGitHubStats() {
   try {
-    const response = await fetch('https://api.github.com/repos/dw-dengwei/daily-arXiv-ai-enhanced');
+    const repoOwner = DATA_CONFIG.repoOwner;
+    const repoName = DATA_CONFIG.repoName;
+    const repoUrl = `https://github.com/${repoOwner}/${repoName}`;
+    const repoLink = document.getElementById('repoLink');
+    const footerRepoLink = document.getElementById('footerRepoLink');
+    if (repoLink) repoLink.href = repoUrl;
+    if (footerRepoLink) footerRepoLink.href = repoUrl;
+
+    const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}`);
     const data = await response.json();
     const starCount = data.stargazers_count;
     const forkCount = data.forks_count;
