@@ -1,0 +1,3 @@
+"EEG" "robotic arm" "BCI"	https://scholar.google.com/scholar?q=%22EEG%22+%22robotic+arm%22+%22BCI%22
+"prosthetic hand" "brain-computer interface"	https://scholar.google.com/scholar?q=%22prosthetic+hand%22+%22brain-computer+interface%22
+"vision-language-action" robot	https://scholar.google.com/scholar?q=%22vision-language-action%22+robot
